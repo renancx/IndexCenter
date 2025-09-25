@@ -13,7 +13,7 @@
         public string ImageFile { get; private set; } = default!;
 
         public decimal Price { get; private set; }
-
+        
         #endregion
 
         #region Methods
