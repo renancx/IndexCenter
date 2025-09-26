@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Builder;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.ChangeTracking;
 using Microsoft.Extensions.DependencyInjection;
 using Shared.Data.Seeds;
 
@@ -15,7 +16,7 @@ namespace Shared.Data
             SeedDataAsync(app.ApplicationServices).GetAwaiter().GetResult();
 
             return app;
-        }    
+        }
 
         private static async Task MigrateDatabaseAsync<TContext>(IServiceProvider serviceProvider)
              where TContext : DbContext
@@ -36,5 +37,11 @@ namespace Shared.Data
                 await seeder.SeedAllAsync();
             }
         }
+
+        public static bool HasChangedOwnedEntities(this EntityEntry entry) =>
+            entry.References.Any(r =>
+            r.TargetEntry != null &&
+            r.TargetEntry.Metadata.IsOwned() &&
+            (r.TargetEntry.State == EntityState.Added || r.TargetEntry.State == EntityState.Modified));
     }
 }

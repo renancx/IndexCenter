@@ -1,7 +1,9 @@
 ﻿using Microsoft.AspNetCore.Builder;
+using Microsoft.EntityFrameworkCore.Diagnostics;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Shared.Data;
+using Shared.Data.Interceptors;
 using Shared.Data.Seeds;
 
 namespace Catalog
@@ -15,11 +17,22 @@ namespace Catalog
             //API endpoint services
 
             //Application use cases services
+            services.AddMediatR(config =>
+            {
+                config.RegisterServicesFromAssembly(Assembly.GetExecutingAssembly());
+            });
 
             //Data - Infrastructure services
             var connectionString = configuration.GetConnectionString("Database");
 
-            services.AddDbContext<CatalogDbContext>(options => options.UseNpgsql(connectionString));
+            services.AddScoped<ISaveChangesInterceptor, AuditableEntityInterceptor>();
+            services.AddScoped<ISaveChangesInterceptor, DispatchDomainEventsInterceptor>();
+
+            services.AddDbContext<CatalogDbContext>((sp, options) => 
+            {
+                options.AddInterceptors(sp.GetServices<ISaveChangesInterceptor>());
+                options.UseNpgsql(connectionString);
+            });
 
             services.AddScoped<IDataSeeder, CatalogDataSeeder>();
 
