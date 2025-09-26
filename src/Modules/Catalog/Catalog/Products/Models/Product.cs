@@ -54,10 +54,8 @@
                 Price = price;
                 AddDomainEvent(new ProductPriceChangedEvent(this));
             }
-        } 
-
+        }
 
         #endregion
-
     }
 }

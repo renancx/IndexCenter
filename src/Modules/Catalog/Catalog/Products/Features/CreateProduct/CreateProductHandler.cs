@@ -1,16 +1,16 @@
 ﻿namespace Catalog.Products.Features.CreateProduct
 {
-    public record CreateProductCommand(ProductDto product) 
+    public record CreateProductCommand(ProductDto Product) 
         : ICommand<CreateProductResult>;
 
-    public record CreateProductResult(Guid id);
+    public record CreateProductResult(Guid Id);
 
     internal class CreateProductHandler(CatalogDbContext dbContext) 
         : ICommandHandler<CreateProductCommand, CreateProductResult>
     {
         public async Task<CreateProductResult> Handle(CreateProductCommand command, CancellationToken cancellationToken)
         {
-            var product = CreateNewProduct(command.product);
+            var product = CreateNewProduct(command.Product);
 
             dbContext.Product.Add(product);
             await dbContext.SaveChangesAsync(cancellationToken);
