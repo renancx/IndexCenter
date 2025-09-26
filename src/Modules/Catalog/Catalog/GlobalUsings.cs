@@ -1,8 +1,10 @@
 ﻿global using Catalog.Data;
 global using Catalog.Data.Seeds;
+global using Catalog.DTOs;
 global using Catalog.Products.Events;
 global using Catalog.Products.Models;
 global using Microsoft.EntityFrameworkCore;
 global using Microsoft.EntityFrameworkCore.Metadata.Builders;
 global using Shared.Common;
+global using Shared.CQRS;
 global using System.Reflection;
