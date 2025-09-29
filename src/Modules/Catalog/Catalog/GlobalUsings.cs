@@ -2,7 +2,7 @@
 global using Catalog.Data.Seeds;
 global using Catalog.DTOs;
 global using Catalog.Products.Events;
-global using Catalog.Products.Models;
+global using Catalog.Products.Entities;
 global using Microsoft.EntityFrameworkCore;
 global using Microsoft.EntityFrameworkCore.Metadata.Builders;
 global using Shared.Common;
