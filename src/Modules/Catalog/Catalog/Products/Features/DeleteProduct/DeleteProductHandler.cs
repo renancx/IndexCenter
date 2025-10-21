@@ -1,9 +1,19 @@
-﻿namespace Catalog.Products.Features.DeleteProduct
+﻿using Catalog.Products.Exceptions;
+
+namespace Catalog.Products.Features.DeleteProduct
 {
     public record DeleteProductCommand(Guid Id)
         : ICommand<DeleteProductResult>;
 
     public record DeleteProductResult(bool IsSuccess);
+
+    public class DeleteProductCommandValidator : AbstractValidator<DeleteProductCommand>
+    {
+        public DeleteProductCommandValidator()
+        {
+            RuleFor(x => x.Id).NotEmpty().WithMessage("Id is required");
+        }
+    }
 
     internal class DeleteProductHandler(CatalogDbContext dbContext)
         : ICommandHandler<DeleteProductCommand, DeleteProductResult>
@@ -13,7 +23,7 @@
             var product = await dbContext.Product.FindAsync([command.Id], cancellationToken);
 
             if (product is null)
-                throw new Exception($"Product not found: {command.Id}");
+                throw new ProductNotFoundException(command.Id);
 
             dbContext.Product.Remove(product);
             await dbContext.SaveChangesAsync(cancellationToken);

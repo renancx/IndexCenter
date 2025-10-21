@@ -10,11 +10,13 @@ namespace Shared.Extensions
         {
             services.AddCarter(configurator: config =>
             {
-                foreach (var assembly in assemblies) {
+                foreach (var assembly in assemblies)
+                {
                     var modules = assembly.GetTypes()
                     .Where(t => t.IsAssignableTo(typeof(ICarterModule))).ToArray();
 
                     config.WithModules(modules);
+                }
             });
 
             return services;

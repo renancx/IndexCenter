@@ -1,9 +1,21 @@
-﻿namespace Catalog.Products.Features.UpdateProduct
+﻿using Catalog.Products.Exceptions;
+
+namespace Catalog.Products.Features.UpdateProduct
 {
     public record UpdateProductCommand(ProductDto Product)
         : ICommand<UpdateProductResult>;
 
     public record UpdateProductResult(bool IsSuccess);
+
+    public class UpdateProductCommandValidator : AbstractValidator<UpdateProductCommand>
+    {
+        public UpdateProductCommandValidator()
+        {
+            RuleFor(x => x.Product.Id).NotEmpty().WithMessage("Id is required");
+            RuleFor(x => x.Product.Name).NotEmpty().WithMessage("Name is required");
+            RuleFor(x => x.Product.Price).GreaterThan(0).WithMessage("Price must be grater than 0");
+        }
+    }
 
     internal class UpdateProductHandler(CatalogDbContext dbContext)
         : ICommandHandler<UpdateProductCommand, UpdateProductResult>
@@ -13,7 +25,7 @@
             var product = await dbContext.Product.FindAsync([command.Product.Id], cancellationToken);
 
             if (product is null)
-                throw new Exception($"Product not found: {command.Product.Id}");
+                throw new ProductNotFoundException(command.Product.Id);
 
             UpdateProductWithNewValues(product, command.Product);
 

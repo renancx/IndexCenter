@@ -1,4 +1,5 @@
-﻿using Mapster;
+﻿using Catalog.Products.Exceptions;
+using Mapster;
 
 namespace Catalog.Products.Features.GetProductById
 {
@@ -16,7 +17,7 @@ namespace Catalog.Products.Features.GetProductById
                 .SingleOrDefaultAsync(p => p.Id == query.Id, cancellationToken);
 
             if(product is null)
-                throw new Exception($"Product not found: {query.Id}");
+                throw new ProductNotFoundException(query.Id);
 
             var productDto = product.Adapt<ProductDto>();
                

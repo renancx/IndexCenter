@@ -1,5 +1,4 @@
-﻿using Carter;
-using Mapster;
+﻿using Mapster;
 using MediatR;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
