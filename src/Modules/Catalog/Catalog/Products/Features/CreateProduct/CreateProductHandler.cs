@@ -17,13 +17,11 @@ namespace Catalog.Products.Features.CreateProduct
         }
     }
 
-    internal class CreateProductHandler(CatalogDbContext dbContext, ILogger<CreateProductHandler> logger) 
+    internal class CreateProductHandler(CatalogDbContext dbContext) 
         : ICommandHandler<CreateProductCommand, CreateProductResult>
     {
         public async Task<CreateProductResult> Handle(CreateProductCommand command, CancellationToken cancellationToken)
         {
-            logger.LogInformation("CreateProductHandler.Handle called with {@Command}", command);
-
             var product = CreateNewProduct(command.Product);
 
             dbContext.Product.Add(product);
