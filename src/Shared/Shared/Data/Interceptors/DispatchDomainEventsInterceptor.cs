@@ -1,7 +1,7 @@
 ﻿using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Diagnostics;
-using Shared.Common;
+using Shared.DDD;
 
 namespace Shared.Data.Interceptors
 {

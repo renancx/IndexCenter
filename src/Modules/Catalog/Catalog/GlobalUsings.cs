@@ -5,7 +5,7 @@ global using Catalog.Products.Events;
 global using Catalog.Products.Entities;
 global using Microsoft.EntityFrameworkCore;
 global using Microsoft.EntityFrameworkCore.Metadata.Builders;
-global using Shared.Common;
+global using Shared.DDD;
 global using Shared.CQRS;
 global using System.Reflection;
 global using FluentValidation;

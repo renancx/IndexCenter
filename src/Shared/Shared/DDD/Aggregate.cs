@@ -1,4 +1,4 @@
-﻿namespace Shared.Common
+﻿namespace Shared.DDD
 {
     public abstract class Aggregate<TId> : Entity<TId>, IAggregate<TId>
     {
