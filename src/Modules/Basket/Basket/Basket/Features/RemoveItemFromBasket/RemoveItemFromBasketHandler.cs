@@ -1,5 +1,4 @@
 ﻿using Basket.Basket.Exceptions;
-using FluentValidation;
 
 namespace Basket.Basket.Features.RemoveItemFromBasket
 {

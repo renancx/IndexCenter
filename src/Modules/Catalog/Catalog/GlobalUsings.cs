@@ -1,12 +1,12 @@
-﻿global using Catalog.Data;
+﻿global using Carter;
+global using Catalog.Data;
 global using Catalog.Data.Seeds;
 global using Catalog.DTOs;
-global using Catalog.Products.Events;
 global using Catalog.Products.Entities;
+global using Catalog.Products.Events;
+global using FluentValidation;
 global using Microsoft.EntityFrameworkCore;
 global using Microsoft.EntityFrameworkCore.Metadata.Builders;
-global using Shared.DDD;
 global using Shared.CQRS;
+global using Shared.DDD;
 global using System.Reflection;
-global using FluentValidation;
-global using Carter;

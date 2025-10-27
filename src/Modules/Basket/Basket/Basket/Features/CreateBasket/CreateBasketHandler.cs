@@ -1,5 +1,4 @@
 ﻿using Basket.Basket.Entities;
-using FluentValidation;
 
 namespace Basket.Basket.Features.CreateBasket
 {
