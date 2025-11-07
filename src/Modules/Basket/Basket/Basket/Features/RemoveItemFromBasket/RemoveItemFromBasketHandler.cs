@@ -1,4 +1,4 @@
-﻿using Basket.Basket.Exceptions;
+﻿using Basket.Data.Repository;
 
 namespace Basket.Basket.Features.RemoveItemFromBasket
 {
@@ -14,20 +14,14 @@ namespace Basket.Basket.Features.RemoveItemFromBasket
         }
     }
 
-    internal class RemoveItemFromBasketHandler(BasketDbContext dbContext) : ICommandHandler<RemoveItemFromBasketCommand, RemoveItemFromBasketResult>
+    internal class RemoveItemFromBasketHandler(IBasketRepository basketRepository) : ICommandHandler<RemoveItemFromBasketCommand, RemoveItemFromBasketResult>
     {
         public async Task<RemoveItemFromBasketResult> Handle(RemoveItemFromBasketCommand command, CancellationToken cancellationToken)
         {
-            var shoppingCart = await dbContext.ShoppingCart
-                .Include(x => x.Items)
-                .SingleOrDefaultAsync(x => x.UserName == command.UserName, cancellationToken);
-
-            if (shoppingCart is null) {
-                throw new BasketNotFoundException(command.UserName);
-            }
+            var shoppingCart = await basketRepository.GetBasket(command.UserName, asNoTracking: false, cancellationToken);
 
             shoppingCart.RemoveItem(command.ProductId);
-            await dbContext.SaveChangesAsync(cancellationToken);
+            await basketRepository.SaveChangesAsync(cancellationToken);
 
             return new RemoveItemFromBasketResult(shoppingCart.Id);
         }

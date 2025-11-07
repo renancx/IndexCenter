@@ -1,4 +1,5 @@
 using Carter;
+using FluentValidation;
 using Serilog;
 using Shared.Exceptions.Handler;
 using Shared.Extensions;
@@ -8,8 +9,14 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Host.UseSerilog((context, config) => config.ReadFrom.Configuration(context.Configuration));
 
 // Add services to the container
+var catalogAssembly = typeof(CatalogModule).Assembly;
+var basketAssembly = typeof(BasketModule).Assembly;
 
-builder.Services.AddCarterWithAssemblies(typeof(CatalogModule).Assembly);
+builder.Services.AddCarterWithAssemblies(catalogAssembly, basketAssembly);
+
+builder.Services.AddMediatRWithAssemblies(catalogAssembly, basketAssembly);
+
+builder.Services.AddValidatorsFromAssemblies([catalogAssembly, basketAssembly]);
 
 builder.Services
     .AddCatalogModule(builder.Configuration)

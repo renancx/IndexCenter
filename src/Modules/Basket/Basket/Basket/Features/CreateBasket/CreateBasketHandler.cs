@@ -1,4 +1,5 @@
 ﻿using Basket.Basket.Entities;
+using Basket.Data.Repository;
 
 namespace Basket.Basket.Features.CreateBasket
 {
@@ -14,14 +15,13 @@ namespace Basket.Basket.Features.CreateBasket
         }
     }
 
-    internal class CreateBasketHandler(BasketDbContext dbContext) : ICommandHandler<CreateBasketCommand, CreateBasketResult> 
+    internal class CreateBasketHandler(IBasketRepository basketRepository) : ICommandHandler<CreateBasketCommand, CreateBasketResult> 
     {
         public async Task<CreateBasketResult> Handle(CreateBasketCommand command, CancellationToken cancellationToken)
         {
             var shoppingCart = CreateNewBasket(command.ShoppingCart);
 
-            dbContext.ShoppingCart.Add(shoppingCart);
-            await dbContext.SaveChangesAsync(cancellationToken);
+            await basketRepository.CreateBasket(shoppingCart, cancellationToken);
 
             return new CreateBasketResult(shoppingCart.Id);
         }
